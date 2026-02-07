@@ -1,5 +1,6 @@
 #include <vector>
 #include "Environment.hpp"
+#include "Player.hpp"
 
 Environment::Environment(){}
 
@@ -33,7 +34,10 @@ void Environment::Draw(){
 }
 void Environment::AddObject(Vector3 pos){
     BoundingBox box = GetModelBoundingBox(blockModel);
-    StaticObject* newObj = new StaticObject(false, pos, 0.0f, blockModel, box);
+    BoundingBox worldBox;
+    worldBox.min = Vector3Add(box.min, pos);
+    worldBox.max = Vector3Add(box.max, pos);
+    StaticObject* newObj = new StaticObject(false, pos, 0.0f, blockModel, worldBox);
     obstacles.push_back(newObj);
 }
 void Environment::Clean(){
@@ -43,4 +47,29 @@ void Environment::Clean(){
 
     obstacles.clear();
     UnloadModel(blockModel);
+}
+bool Environment::HandleCollision(Vector3 futurePos,BoundingBox collisionBox){
+    BoundingBox phantomBox;
+
+    phantomBox.min = Vector3Add(collisionBox.min, futurePos);
+    phantomBox.max = Vector3Add(collisionBox.max, futurePos);
+    phantomBox.min.y += 0.1f;
+    phantomBox.max.y += 0.1f;
+
+    for (StaticObject* object : obstacles)
+    {
+        if (CheckCollisionBoxes(object->collisionBox,phantomBox))
+        {
+            return true;
+        }
+        
+    }
+    return false;
+}
+
+void Environment::DrawDebug() {
+    for (StaticObject* obj : obstacles) {
+        // Her objenin çarpışma kutusunu YEŞİL tel kafes olarak çiz
+        DrawBoundingBox(obj->collisionBox, GREEN);
+    }
 }

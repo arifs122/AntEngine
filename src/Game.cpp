@@ -39,7 +39,7 @@ void Game::Run(){
 void Game::Update(){
     float dt = GetFrameTime();
 
-    player->Update(dt);
+    player->Update(dt,environment);
 
     cameraManager->camera.target = player->position;
     cameraManager->UpdateCamera(*player);
@@ -55,6 +55,13 @@ void Game::Draw(){
         DrawGrid(500,1.0f);
         player->Draw();
         environment->Draw();
+        environment->DrawDebug(); // <--- KUTULARI ÇİZ (Bunu ekle)
+        
+        // Player kutusunu da çizelim ki onu da gör (KIRMIZI)
+        BoundingBox pBox = GetModelBoundingBox(player->model);
+        pBox.min = Vector3Add(pBox.min, player->position);
+        pBox.max = Vector3Add(pBox.max, player->position);
+        DrawBoundingBox(pBox, RED);
     
     EndMode3D();
     DrawFPS(10,10);

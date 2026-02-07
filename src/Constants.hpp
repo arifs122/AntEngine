@@ -1,6 +1,6 @@
 #pragma once
 const float GRAVITY = 25.0f;
-const float JUMP_POWER = 8.0f;
+const float JUMP_POWER = 15.0f;
 const float MOVE_SPEED = 4.0f;
 const float MOUSE_SENSIVITY = 0.018f;
 const float MAX_PITCH = 1.2f;

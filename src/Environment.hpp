@@ -19,4 +19,6 @@ public:
     void Draw();
     void AddObject(Vector3 pos);
     void Clean();
+    bool HandleCollision(Vector3 futurePos,BoundingBox collisionBox);
+    void DrawDebug();
 };

@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Environment.hpp"
 
 Player::Player(Model playerModel) : Entity(Vector3{0.0f,0.0f,0.0f},playerModel, 100 ,Faction::Player){
     speedY = 0.0f;
@@ -11,21 +12,41 @@ Player::~Player(){
 
 }
 
-void Player::Update(float dt) {
-    lastpos = position; // to revert collision
+void Player::Update(float dt,Environment* env) {
 
-    speedY -= GRAVITY * GetFrameTime();
+    speedY -= GRAVITY * dt;
+    float deltaY = speedY * dt;
 
-    float futureY = position.y + (speedY*dt);
+    Vector3 nextPosY = position;
+    nextPosY.y += deltaY;
 
-    // 0.1f is for floating-point precision error
-    if (futureY <= 0.0f) {
+    BoundingBox myBox = GetModelBoundingBox(model);
+
+    if (nextPosY.y <= 0.0f) {
         position.y = 0.0f;
         speedY = 0.0f;
         isGrounded = true;
-    } else {
-        position.y = futureY;
-        isGrounded = false;
+    } 
+    else {
+        bool hitY = false;
+        
+        if (env != nullptr) {
+            hitY = env->HandleCollision(nextPosY, myBox);
+        }
+
+        if (hitY) {
+ 
+            if (speedY < 0.0f) {
+                isGrounded = true; 
+            }
+            speedY = 0.0f;
+
+        } 
+        else {
+
+            position.y = nextPosY.y; 
+            isGrounded = false;
+        }
     }
 
     // we assign these to a speed variable so when jumped while moving you cant change directions in air
@@ -39,27 +60,50 @@ void Player::Update(float dt) {
 
         // movement
         if (IsKeyDown(KEY_W)) {
-            speedZ -= cos(angle) * MOVE_SPEED;
-            speedX -= sin(angle) * MOVE_SPEED;
+            speedZ -= cosf(angle) * MOVE_SPEED;
+            speedX -= sinf(angle) * MOVE_SPEED;
         }
         if (IsKeyDown(KEY_A)) {
-            speedX -= cos(angle) * MOVE_SPEED;
-            speedZ += sin(angle) * MOVE_SPEED;
+            speedX -= cosf(angle) * MOVE_SPEED;
+            speedZ += sinf(angle) * MOVE_SPEED;
         }
         if (IsKeyDown(KEY_S)) {
-            speedZ += cos(angle) * MOVE_SPEED;
-            speedX += sin(angle) * MOVE_SPEED;
+            speedZ += cosf(angle) * MOVE_SPEED;
+            speedX += sinf(angle) * MOVE_SPEED;
         }
         if (IsKeyDown(KEY_D)) {
-            speedX += cos(angle) * MOVE_SPEED;
-            speedZ -= sin(angle) * MOVE_SPEED;
+            speedX += cosf(angle) * MOVE_SPEED;
+            speedZ -= sinf(angle) * MOVE_SPEED;
         }
     }
+    float deltaX = speedX * dt;
+    float deltaZ = speedZ * dt;
+
+    Vector3 nextPosX = position; 
+    nextPosX.x += deltaX;
+
+    bool hitX = false;
+    if (env != nullptr) {
+        hitX = env->HandleCollision(nextPosX, myBox);
+    }
+
+    if (!hitX) {
+        position.x = nextPosX.x;
+    } 
+    Vector3 nextPosZ = position;
+    nextPosZ.z += deltaZ;
+
+    bool hitZ = false;
+    if (env != nullptr) {
+        hitZ = env->HandleCollision(nextPosZ, myBox);
+    }
+
+    if (!hitZ) {
+        position.z = nextPosZ.z;
+    }
+
     
-    // add speed
-    position.y += speedY * GetFrameTime();
-    position.x += speedX * GetFrameTime();
-    position.z += speedZ * GetFrameTime();
+
 }
 
 void Player::Draw() {
