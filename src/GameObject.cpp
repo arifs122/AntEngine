@@ -12,6 +12,10 @@ GameObject::~GameObject(){}
 void GameObject::Update(float dt){}
 
 void GameObject::Draw(){
-    Vector3 rotationAxis = {0.0f,1.0f,0.0f};
-    DrawModelEx(model,position,rotationAxis,angle,{1.0f,1.0f,1.0f},WHITE);
+ // need these for DrawModelEx
+    Vector3 rotationAxis = { 0.0f, 1.0f, 0.0f };
+    float rotationAngle = angle * RAD2DEG; 
+    Vector3 scaleVector = { 1.0f, 1.0f, 1.0f };
+    
+    DrawModelEx(this->model, position, rotationAxis, rotationAngle, scaleVector, WHITE);
 }

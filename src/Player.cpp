@@ -1,14 +1,11 @@
 #include "Player.hpp"
 
-Player::Player(Model playerModel) : Entity(Vector3{0.0f,0.0f,0.0f}, 100 ,Faction::Player){
-    this->model = playerModel;
-    angle = 0.0f;
+Player::Player(Model playerModel) : Entity(Vector3{0.0f,0.0f,0.0f},playerModel, 100 ,Faction::Player){
     speedY = 0.0f;
     speedX = 0.0f;
     speedZ = 0.0f;
     isGrounded = false;
-    maxHp = maxHp;
-    lastpos = position;
+    lastpos = this->position;
 }
 Player::~Player(){
 
@@ -19,10 +16,15 @@ void Player::Update(float dt) {
 
     speedY -= GRAVITY * GetFrameTime();
 
+    float futureY = position.y + (speedY*dt);
+
     // 0.1f is for floating-point precision error
-    if (position.y <= 0.1f) {
+    if (futureY <= 0.0f) {
+        position.y = 0.0f;
+        speedY = 0.0f;
         isGrounded = true;
     } else {
+        position.y = futureY;
         isGrounded = false;
     }
 
@@ -53,13 +55,7 @@ void Player::Update(float dt) {
             speedZ -= sin(angle) * MOVE_SPEED;
         }
     }
-
-    // dont fall below the floor
-    if (position.y < 0 && speedY <= 0.0f) {
-        speedY = 0.0f;
-        position.y = 0.0f;
-    }
-
+    
     // add speed
     position.y += speedY * GetFrameTime();
     position.x += speedX * GetFrameTime();
@@ -67,10 +63,5 @@ void Player::Update(float dt) {
 }
 
 void Player::Draw() {
-    // need these for DrawModelEx
-    Vector3 rotationAxis = { 0.0f, 1.0f, 0.0f };
-    float rotationAngle = angle * RAD2DEG; 
-    Vector3 scaleVector = { 1.0f, 1.0f, 1.0f };
-    
-    DrawModelEx(this->model, position, rotationAxis, rotationAngle, scaleVector, WHITE);
+    GameObject::Draw();
 }

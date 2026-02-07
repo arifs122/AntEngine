@@ -1,5 +1,5 @@
 #pragma once
-
+#include "GameObject.hpp"
 #include "raylib.h"
 
 enum class Faction {
@@ -9,21 +9,18 @@ enum class Faction {
     Environment
 };
 
-class Entity {
+class Entity : public GameObject {
     public:
-    Vector3 position;
-    float angle;
     int currentHp;
     int maxHp;
     bool isDead;
     Faction faction;
-    Model model;
 
     
-    Entity(Vector3 startingPos, int maxHp, Faction faction);
+    Entity(Vector3 startingPos, Model mModel, int mMaxHp, Faction mFaction);
     virtual ~Entity();
 
     virtual void TakeDamage(int damageAmount);
-    virtual void Update(float dt);
-    virtual void Draw();
+    void Update(float dt) override;
+    void Draw() override;
 };

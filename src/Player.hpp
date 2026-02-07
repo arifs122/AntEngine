@@ -14,8 +14,7 @@ public:
     bool isGrounded;
     Vector3 lastpos; 
 
-    // Constructor declaration
-    Player(Vector3 startingPos,int maxHp,Faction faction);
+    Player(Vector3 startingPos,Model model,int maxHp,Faction faction);
     ~Player();
     // Function declarations
     void Update(float dt);

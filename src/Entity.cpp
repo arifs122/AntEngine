@@ -5,8 +5,7 @@
 #include "raymath.h"
 
 
-    Entity::Entity(Vector3 startingPos,int maxHp,Faction faction){
-        this->position = startingPos;
+    Entity::Entity(Vector3 startingPos,Model mModel,int mMaxHp,Faction mFaction) : GameObject(startingPos, 0.0f, mModel, GetModelBoundingBox(mModel)){
         this->maxHp = maxHp;
         this->currentHp = maxHp;
         this->faction = faction;
@@ -27,5 +26,5 @@
 
     }
     void Entity::Draw(){
-        DrawModel(model,position,1.0f,WHITE);
+       GameObject::Draw();
     }
