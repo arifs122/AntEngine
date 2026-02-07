@@ -3,6 +3,7 @@
 #include "Player.hpp"
 #include "CameraManager.hpp"
 #include "Constants.hpp"
+#include "Environment.hpp"
 
 class Game{
 public:
@@ -19,5 +20,6 @@ private:
 
     Player* player;
     CameraManager* cameraManager;
+    Environment* environment;
     Model antModel;
 };

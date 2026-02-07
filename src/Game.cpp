@@ -21,6 +21,9 @@ void Game::Init(){
         {0.0f,10.0f,10.0f},
         player->position
     );
+
+    environment = new Environment();
+    environment->Init();
 }
 
 void Game::Run(){
@@ -40,6 +43,8 @@ void Game::Update(){
 
     cameraManager->camera.target = player->position;
     cameraManager->UpdateCamera(*player);
+
+    environment->Update();//no use for now
 }
 
 void Game::Draw(){
@@ -49,6 +54,7 @@ void Game::Draw(){
     BeginMode3D(cameraManager->camera);
         DrawGrid(500,1.0f);
         player->Draw();
+        environment->Draw();
     
     EndMode3D();
     DrawFPS(10,10);
@@ -65,6 +71,11 @@ void Game::Shutdown(){
     {
         delete cameraManager;
         cameraManager = nullptr;
+    }
+    if (environment != nullptr) {
+        environment->Clean();
+        delete environment;
+        environment = nullptr;
     }
     
     UnloadModel(antModel);
