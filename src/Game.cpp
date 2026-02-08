@@ -10,7 +10,7 @@ Game::~Game(){
 }
 
 void Game::Init(){
-    InitWindow(SCREENWIDTH,SCREENHEIGHT,"game");
+    InitWindow(Config::Window::SCREENWIDTH,Config::Window::SCREENHEIGHT,"game");
     SetTargetFPS(60);
 
     antModel = LoadModel("/home/dayi/Desktop/ant/AntArchy/resources/deneme.glb");

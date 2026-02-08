@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #include <vector>
 #include "raylib.h"
 #include "raymath.h"
@@ -7,7 +7,7 @@
 
 class Environment{
 public:
-    std::vector<StaticObject*> obstacles;
+    std::vector<std::unique_ptr<StaticObject>> obstacles;
     
     Model blockModel; // temporary model for testing
 

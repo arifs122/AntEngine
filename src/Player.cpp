@@ -14,7 +14,7 @@ Player::~Player(){
 
 void Player::Update(float dt,Environment* env) {
 
-    speedY -= GRAVITY * dt;
+    speedY -= Config::Physics::GRAVITY * dt;
     float deltaY = speedY * dt;
 
     Vector3 nextPosY = position;
@@ -55,25 +55,25 @@ void Player::Update(float dt,Environment* env) {
         speedZ = 0.0f;
 
         if (IsKeyPressed(KEY_SPACE)) {
-            speedY = JUMP_POWER;
+            speedY = Config::Physics::JUMP_POWER;
         }
 
         // movement
         if (IsKeyDown(KEY_W)) {
-            speedZ -= cosf(angle) * MOVE_SPEED;
-            speedX -= sinf(angle) * MOVE_SPEED;
+            speedZ -= cosf(angle) * Config::Physics::MOVE_SPEED;
+            speedX -= sinf(angle) * Config::Physics::MOVE_SPEED;
         }
         if (IsKeyDown(KEY_A)) {
-            speedX -= cosf(angle) * MOVE_SPEED;
-            speedZ += sinf(angle) * MOVE_SPEED;
+            speedX -= cosf(angle) * Config::Physics::MOVE_SPEED;
+            speedZ += sinf(angle) * Config::Physics::MOVE_SPEED;
         }
         if (IsKeyDown(KEY_S)) {
-            speedZ += cosf(angle) * MOVE_SPEED;
-            speedX += sinf(angle) * MOVE_SPEED;
+            speedZ += cosf(angle) * Config::Physics::MOVE_SPEED;
+            speedX += sinf(angle) * Config::Physics::MOVE_SPEED;
         }
         if (IsKeyDown(KEY_D)) {
-            speedX += cosf(angle) * MOVE_SPEED;
-            speedZ -= sinf(angle) * MOVE_SPEED;
+            speedX += cosf(angle) * Config::Physics::MOVE_SPEED;
+            speedZ -= sinf(angle) * Config::Physics::MOVE_SPEED;
         }
     }
     float deltaX = speedX * dt;
@@ -101,9 +101,6 @@ void Player::Update(float dt,Environment* env) {
     if (!hitZ) {
         position.z = nextPosZ.z;
     }
-
-    
-
 }
 
 void Player::Draw() {

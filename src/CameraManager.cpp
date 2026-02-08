@@ -24,23 +24,23 @@
         // controls for camera and movement
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && IsMouseButtonDown(MOUSE_BUTTON_RIGHT) == 0)
         {
-            cameraAngle -= GetMouseDelta().x*MOUSE_SENSIVITY;
-            pitch += GetMouseDelta().y*MOUSE_SENSIVITY;
+            cameraAngle -= GetMouseDelta().x*Config::Camera::MOUSE_SENSIVITY;
+            pitch += GetMouseDelta().y*Config::Camera::MOUSE_SENSIVITY;
             mouseButtonDown = 1;
         }
         
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
         {
-            cameraAngle -= GetMouseDelta().x*MOUSE_SENSIVITY;
-            player.angle -= GetMouseDelta().x*MOUSE_SENSIVITY;
-            pitch += GetMouseDelta().y*MOUSE_SENSIVITY;
+            cameraAngle -= GetMouseDelta().x*Config::Camera::MOUSE_SENSIVITY;
+            player.angle -= GetMouseDelta().x*Config::Camera::MOUSE_SENSIVITY;
+            pitch += GetMouseDelta().y*Config::Camera::MOUSE_SENSIVITY;
             mouseButtonDown = 1;
         }
 
         if (mouseButtonDown == 1)
         {
             HideCursor();
-            pitch = Clamp(pitch, MIN_PITCH, MAX_PITCH);
+            pitch = Clamp(pitch, Config::Camera::MIN_PITCH, Config::Camera::MAX_PITCH);
         } else {
             ShowCursor();
         }

@@ -28,7 +28,7 @@ void Environment::Init(){
 void Environment::Update(){}
 
 void Environment::Draw(){
-    for (StaticObject* obj : obstacles) {
+    for (const auto& obj : obstacles) {
         obj->Draw();
     }
 }
@@ -37,14 +37,9 @@ void Environment::AddObject(Vector3 pos){
     BoundingBox worldBox;
     worldBox.min = Vector3Add(box.min, pos);
     worldBox.max = Vector3Add(box.max, pos);
-    StaticObject* newObj = new StaticObject(false, pos, 0.0f, blockModel, worldBox);
-    obstacles.push_back(newObj);
+    obstacles.push_back(std::make_unique<StaticObject>(false, pos, 0.0f, blockModel, worldBox));
 }
 void Environment::Clean(){
-    for (StaticObject* obj : obstacles) {
-        delete obj;
-    }
-
     obstacles.clear();
     UnloadModel(blockModel);
 }
@@ -56,9 +51,9 @@ bool Environment::HandleCollision(Vector3 futurePos,BoundingBox collisionBox){
     phantomBox.min.y += 0.1f;
     phantomBox.max.y += 0.1f;
 
-    for (StaticObject* object : obstacles)
+    for (const auto& obj : obstacles)
     {
-        if (CheckCollisionBoxes(object->collisionBox,phantomBox))
+        if (CheckCollisionBoxes(obj->collisionBox,phantomBox))
         {
             return true;
         }
@@ -68,7 +63,7 @@ bool Environment::HandleCollision(Vector3 futurePos,BoundingBox collisionBox){
 }
 
 void Environment::DrawDebug() {
-    for (StaticObject* obj : obstacles) {
+    for (const auto& obj : obstacles) {
         // Her objenin çarpışma kutusunu YEŞİL tel kafes olarak çiz
         DrawBoundingBox(obj->collisionBox, GREEN);
     }
