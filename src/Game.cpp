@@ -1,28 +1,27 @@
 #include "Game.hpp"
 
 Game::Game(){
-    player = nullptr;
-    cameraManager = nullptr;
+    resourcePath = "resources/";
 }
 
 Game::~Game(){
-    Shutdown();
+    
 }
 
 void Game::Init(){
     InitWindow(Config::Window::SCREENWIDTH,Config::Window::SCREENHEIGHT,"game");
     SetTargetFPS(60);
 
-    antModel = LoadModel("/home/dayi/Desktop/ant/AntArchy/resources/deneme.glb");
+    antModel = LoadModel("resources/deneme.glb");
 
-    player = new Player(antModel);
+    player = std::make_unique<Player>(antModel);
 
-    cameraManager = new CameraManager(
-        {0.0f,10.0f,10.0f},
+    cameraManager = std::make_unique<CameraManager>(
+        Vector3{0.0f,10.0f,10.0f},
         player->position
     );
-
-    environment = new Environment();
+    // create and initialize environment when game starts
+    environment = std::make_unique<Environment>();
     environment->Init();
 }
 
@@ -39,26 +38,34 @@ void Game::Run(){
 void Game::Update(){
     float dt = GetFrameTime();
 
-    player->Update(dt,environment);
-
-    cameraManager->camera.target = player->position;
-    cameraManager->UpdateCamera(*player);
-
-    environment->Update();//no use for now
+    if (player)
+    {
+        player->Update(dt,environment.get());
+    }
+    if (cameraManager && player)
+    {
+        cameraManager->camera.target = player->position;
+        cameraManager->UpdateCamera(*player);
+    }
+    if (environment)
+    {
+        environment->Update();// no use for now
+    }
+    
 }
 
 void Game::Draw(){
     BeginDrawing();
     ClearBackground(RAYWHITE);
-
-    BeginMode3D(cameraManager->camera);
+    
+    BeginMode3D(cameraManager->GetCamera());
         DrawGrid(500,1.0f);
         player->Draw();
         environment->Draw();
-        environment->DrawDebug(); // <--- KUTULARI ÇİZ (Bunu ekle)
+        environment->DrawDebug(); // collision borders
         
-        // Player kutusunu da çizelim ki onu da gör (KIRMIZI)
-        BoundingBox pBox = GetModelBoundingBox(player->model);
+      
+        BoundingBox pBox = GetModelBoundingBox(player->model);// player collision borders 
         pBox.min = Vector3Add(pBox.min, player->position);
         pBox.max = Vector3Add(pBox.max, player->position);
         DrawBoundingBox(pBox, RED);
@@ -67,24 +74,7 @@ void Game::Draw(){
     DrawFPS(10,10);
     EndDrawing();
 }
-
-void Game::Shutdown(){
-    if (player != nullptr)
-    {
-        delete player;
-        player = nullptr;
-    }
-    if (cameraManager != nullptr)
-    {
-        delete cameraManager;
-        cameraManager = nullptr;
-    }
-    if (environment != nullptr) {
-        environment->Clean();
-        delete environment;
-        environment = nullptr;
-    }
-    
-    UnloadModel(antModel);
+// delete everything on shutdown
+void Game::Clean(){
     CloseWindow();
 }

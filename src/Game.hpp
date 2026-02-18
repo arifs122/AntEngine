@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <string>
 #include "raylib.h"
 #include "Player.hpp"
 #include "CameraManager.hpp"
@@ -7,19 +9,22 @@
 
 class Game{
 public:
+    std::unique_ptr<Player> player;
+    std::unique_ptr<Environment> environment;
+    std::unique_ptr<CameraManager> cameraManager;
+
+    std::string resourcePath;
+
     Game();
     ~Game();
 
     void Run();
-
-private:
     void Init();
     void Update();
     void Draw();
-    void Shutdown();
+    
+    void Clean();
 
-    Player* player;
-    CameraManager* cameraManager;
-    Environment* environment;
     Model antModel;
+    
 };

@@ -1,10 +1,10 @@
 #include "GameObject.hpp"
 
-GameObject::GameObject(Vector3 position, float angle, Model model, BoundingBox collisionBox){
-    this->position = position;
-    this->angle = angle;
-    this->model = model;
-    this->collisionBox = collisionBox;
+GameObject::GameObject(Vector3 pos, float ang, Model mod, BoundingBox collBox){
+    this->position = pos;
+    this->angle = ang;
+    this->model = mod;
+    this->collisionBox = collBox;
 }
 
 GameObject::~GameObject(){}

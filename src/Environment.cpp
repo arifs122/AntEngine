@@ -35,6 +35,7 @@ void Environment::Draw(){
 void Environment::AddObject(Vector3 pos){
     BoundingBox box = GetModelBoundingBox(blockModel);
     BoundingBox worldBox;
+    //get the collision box to right position
     worldBox.min = Vector3Add(box.min, pos);
     worldBox.max = Vector3Add(box.max, pos);
     obstacles.push_back(std::make_unique<StaticObject>(false, pos, 0.0f, blockModel, worldBox));
@@ -43,6 +44,7 @@ void Environment::Clean(){
     obstacles.clear();
     UnloadModel(blockModel);
 }
+// get future pos of moving object and check
 bool Environment::HandleCollision(Vector3 futurePos,BoundingBox collisionBox){
     BoundingBox phantomBox;
 
@@ -62,9 +64,9 @@ bool Environment::HandleCollision(Vector3 futurePos,BoundingBox collisionBox){
     return false;
 }
 
+// for drawing collision borders
 void Environment::DrawDebug() {
     for (const auto& obj : obstacles) {
-        // Her objenin çarpışma kutusunu YEŞİL tel kafes olarak çiz
         DrawBoundingBox(obj->collisionBox, GREEN);
     }
 }

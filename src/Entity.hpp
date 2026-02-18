@@ -16,7 +16,6 @@ class Entity : public GameObject {
     bool isDead;
     Faction faction;
 
-    
     Entity(Vector3 startingPos, Model mModel, int mMaxHp, Faction mFaction);
     virtual ~Entity();
 

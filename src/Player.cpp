@@ -14,14 +14,16 @@ Player::~Player(){
 
 void Player::Update(float dt,Environment* env) {
 
+    //apply gravity
     speedY -= Config::Physics::GRAVITY * dt;
     float deltaY = speedY * dt;
-
+    //to stop jitter when player is on ground
     Vector3 nextPosY = position;
     nextPosY.y += deltaY;
 
     BoundingBox myBox = GetModelBoundingBox(model);
 
+    //check y collision
     if (nextPosY.y <= 0.0f) {
         position.y = 0.0f;
         speedY = 0.0f;
@@ -79,6 +81,7 @@ void Player::Update(float dt,Environment* env) {
     float deltaX = speedX * dt;
     float deltaZ = speedZ * dt;
 
+    // check x and y collision
     Vector3 nextPosX = position; 
     nextPosX.x += deltaX;
 

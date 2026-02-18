@@ -1,7 +1,6 @@
 #include "StaticObject.hpp"
-
-StaticObject::StaticObject(bool isBreakable,Vector3 position, float angle, Model model, BoundingBox collisionBox) : GameObject(position,angle,model,collisionBox){
-    this->isBreakable = isBreakable;
+StaticObject::StaticObject(bool isBreakabl,Vector3 pos, float ang, Model mod, BoundingBox collBox) : GameObject(pos,ang,mod,collBox){
+    this->isBreakable = isBreakabl;
 }
 
 StaticObject::~StaticObject(){}
