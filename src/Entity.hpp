@@ -1,4 +1,6 @@
 #pragma once
+#include "Constants.hpp"
+#include "Environment.hpp"
 #include "GameObject.hpp"
 #include "raylib.h"
 
@@ -10,7 +12,10 @@ enum class Faction {
 };
 
 class Entity : public GameObject {
-    public:
+public:
+    Vector3 velocity;
+    bool isGrounded;
+
     int currentHp;
     int maxHp;
     bool isDead;
@@ -18,6 +23,8 @@ class Entity : public GameObject {
 
     Entity(Vector3 startingPos, Model mModel, int mMaxHp, Faction mFaction);
     virtual ~Entity();
+
+    void ApplyPhysics(float dt, Environment* env);
 
     virtual void TakeDamage(int damageAmount);
     void Update(float dt) override;

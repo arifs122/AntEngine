@@ -19,7 +19,14 @@ int main() {
     */
     
     Game game;
-    game.Run();
-    
+    game.Init();
+
+    while (!WindowShouldClose())
+    {
+        game.Update();
+        game.Draw();
+    }
+
+    game.Clean();
     return 0;
 }

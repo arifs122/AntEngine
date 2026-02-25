@@ -1,4 +1,5 @@
 #pragma once
+#include "State.hpp"
 #include <memory>
 #include <string>
 #include "raylib.h"
@@ -8,23 +9,16 @@
 #include "Environment.hpp"
 
 class Game{
+private:
+    std::unique_ptr<State> currentState; 
+
 public:
-    std::unique_ptr<Player> player;
-    std::unique_ptr<Environment> environment;
-    std::unique_ptr<CameraManager> cameraManager;
-
-    std::string resourcePath;
-
     Game();
     ~Game();
 
-    void Run();
     void Init();
     void Update();
     void Draw();
-    
     void Clean();
-
-    Model antModel;
     
 };

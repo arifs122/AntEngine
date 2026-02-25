@@ -9,13 +9,7 @@ class Environment;
 class Player: public Entity {
 public:
     Player(Model playerModel);
-    ~Player();
-
-    float speedY;
-    float speedX;
-    float speedZ;
-    bool isGrounded;
-    Vector3 lastpos; 
+    ~Player(); 
 
     void Update(float dt,Environment* env);
     void Draw();
