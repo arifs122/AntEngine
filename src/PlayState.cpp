@@ -1,9 +1,11 @@
 #include "PlayState.hpp"
+#include "Game.hpp"
+#include "PauseState.hpp"
 
 PlayState::PlayState(){}
 PlayState::~PlayState(){}
 
-void PlayState::Init (){
+void PlayState::Init (Game* game){
     antModel = LoadModel("resources/deneme.glb");
 
     player = std::make_unique<Player>(antModel);
@@ -17,7 +19,14 @@ void PlayState::Init (){
     environment->Init();
 }
 
-void PlayState::Update(float dt){
+void PlayState::Update(float dt,Game* game){
+
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        game->PushState(std::make_unique<PauseState>());
+        return;
+    }
+    
     if(player){
         player->Update(dt, environment.get());
     }
@@ -29,8 +38,7 @@ void PlayState::Update(float dt){
 
     // environment->Update(dt);
 }
-void PlayState::Draw(){
-    BeginDrawing();
+void PlayState::Draw(Game* game){
     ClearBackground(RAYWHITE);
     
     BeginMode3D(cameraManager->GetCamera());
@@ -48,9 +56,8 @@ void PlayState::Draw(){
     EndMode3D();
     DrawFPS(10,10);
 
-    EndDrawing();
 }
-void PlayState::Clean(){
+void PlayState::Clean(Game* game){
     UnloadModel(antModel);
     UnloadTexture(playerFrame);
 }

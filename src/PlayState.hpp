@@ -24,8 +24,8 @@ public:
     PlayState();
     ~PlayState();
 
-    virtual void Init() override;
-    virtual void Update(float dt) override;
-    virtual void Draw() override;
-    virtual void Clean() override;
+    virtual void Init(Game* game) override;
+    virtual void Update(float dt,Game* game) override;
+    virtual void Draw(Game* game) override;
+    virtual void Clean(Game* game) override;
 };
