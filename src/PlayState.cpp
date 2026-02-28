@@ -1,13 +1,15 @@
 #include "PlayState.hpp"
 #include "Game.hpp"
 #include "PauseState.hpp"
+#include "ResourceManager.hpp"
 
 PlayState::PlayState(){}
 PlayState::~PlayState(){}
 
 void PlayState::Init (Game* game){
-    antModel = LoadModel("resources/deneme.glb");
-
+    antModel = ResourceManager::Get().LoadModelRes("resources/deneme.glb");
+    playerFrame = LoadTexture("resources/player.png");
+    
     player = std::make_unique<Player>(antModel);
 
     cameraManager = std::make_unique<CameraManager>(
@@ -58,6 +60,4 @@ void PlayState::Draw(Game* game){
 
 }
 void PlayState::Clean(Game* game){
-    UnloadModel(antModel);
-    UnloadTexture(playerFrame);
 }

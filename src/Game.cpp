@@ -1,6 +1,6 @@
 #include "Game.hpp"
 #include "PlayState.hpp"
-
+#include "ResourceManager.hpp"
 
 Game::Game(){}
 
@@ -51,6 +51,7 @@ void Game::Clean(){
     for (const auto& state : states) {
         state->Clean(this);
     }
+    ResourceManager::Get().Clean();
     CloseWindow();
     
 }
